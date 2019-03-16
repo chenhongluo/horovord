@@ -5,8 +5,8 @@ From: nvidia/cuda:9.0-devel-ubuntu16.04
 	# TensorFlow version is tightly coupled to CUDA and cuDNN so it should be selected carefully
 	export TENSORFLOW_VERSION=1.12.0
 	export PYTORCH_VERSION=1.0.0
-	export CUDNN_VERSION=7.4.1.5
-	export NCCL_VERSION=2.4.2
+	export CUDNN_VERSION=7.4.1.5-1+cuda9.0
+	export NCCL_VERSION=2.4.2-1+cuda9.0
 
 	# Python 2.7 or 3.5 is supported by Ubuntu Xenial out of the box
 	# ARG python=3.5
@@ -21,13 +21,24 @@ From: nvidia/cuda:9.0-devel-ubuntu16.04
 			vim \
 			wget \
 			ca-certificates \
-			libcudnn7=${CUDNN_VERSION} \
-			libnccl2=${NCCL_VERSION} \
-			libnccl-dev=${NCCL_VERSION} \
+			# libcudnn7=${CUDNN_VERSION} \
+			# libnccl2=${NCCL_VERSION} \
+			# libnccl-dev=${NCCL_VERSION} \
 			libjpeg-dev \
 			libpng-dev \
 			python${PYTHON_VERSION} \
 			python${PYTHON_VERSION}-dev
+	wget http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn7_${CUDNN_VERSION}_amd64.deb
+	wget http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libcudnn7-dev_${CUDNN_VERSION}_amd64.deb
+	wget http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libnccl2_${NCCL_VERSION}_amd64.deb
+	wget http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/libnccl-dev_${NCCL_VERSION}_amd64.deb
+	dpkg -i libcudnn7_${CUDNN_VERSION}_amd64.deb
+	dpkg -i libcudnn7-dev_${CUDNN_VERSION}_amd64.deb
+	dpkg -i libnccl2_${NCCL_VERSION}_amd64.deb
+	dpkg -i libnccl-${NCCL_VERSION}_amd64.deb
+	apt-get update
+	# apt-get install libcudnn7-dev
+	# apt-get install libnccl-dev
 
 	ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python
 
